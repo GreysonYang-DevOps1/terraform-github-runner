@@ -4,7 +4,7 @@ terraform {
     organization = "TFAL"
 
     workspaces {
-      name = "TFA-Github_Runner"
+      name = "DEV-Greyson-CLI"
     }
   }
 
