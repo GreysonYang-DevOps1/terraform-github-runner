@@ -16,13 +16,22 @@ ec2_runner_ami_id        = "ami-05edfd48928db6e60"
 ec2_runner_instance_keypair = "runner-ec2-key"
 ec2_runner_root_volume_size = 30
 ec2_runner_root_volume_type = "gp2"
-ec2_runner_data_volume_size = 10
+ec2_runner_data_volume_size = 30
 ec2_runner_data_volume_type = "gp2"
-ec2_runner_local_user_pwd   = "admin123456;"
-ec2_runner_github_pat       = "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"
-ec2_runner_github_repo_owner = "GreysonYang-DevOps1"
-ec2_runner_github_repo_name  = "github-runner-public"
 
+# EC2 GitHub Runner ASG Variables
+ec2_runner_asg_name = "GitHub-Runner-ASG"
+ec2_runner_asg_launch_template_name = "GitHub-Runner-LT"
+ec2_runner_asg_scaling_schedule_night_recurrence = "0 18 * * 1-5"
+ec2_runner_asg_scaling_schedule_night_min = 1
+ec2_runner_asg_scaling_schedule_night_max = 1
+ec2_runner_asg_scaling_schedule_night_desired = 1
+ec2_runner_asg_scaling_schedule_morning_recurrence = "0 7 * * 1-5"
+ec2_runner_asg_scaling_schedule_morning_min = 3
+ec2_runner_asg_scaling_schedule_morning_max = 5
+ec2_runner_asg_scaling_schedule_morning_desired = 3
+ec2_runner_asg_scaling_policy_avg_cpu_warmup = 600
+ec2_runner_asg_scaling_policy_avg_cpu_target_percentage = 50.0
 
 # VPC Variables
 vpc_name                               = "github_runner-vpc"

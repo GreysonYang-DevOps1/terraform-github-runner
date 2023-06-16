@@ -1,6 +1,6 @@
 # Security Group for EC2 GitHub Runner Host
 
-module "public_runner_sg" {
+module "public_runner_asg_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.0.0"
 

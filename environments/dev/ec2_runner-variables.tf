@@ -85,3 +85,8 @@ variable "ec2_runner_github_repo_name" {
   type        = string
   description = "GtiHub Repo Name for Runner Registration"
 }
+
+variable "ec2_runner_github_repo_registration_token" {
+  type        = string
+  description = "GtiHub Runner Registration Token"
+}

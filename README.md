@@ -30,19 +30,5 @@ rm -rf terraform.backup
 
 ## TO-DO
 ```
-0. Automated get Windows password
 
-
-1. automated SSH installation 
-2. automated Github Runner binaries
-3. automated token
-
-
-Troubleshooting
-System user
-Services
-
-Permission issue
- not do service install
- 
 ```
