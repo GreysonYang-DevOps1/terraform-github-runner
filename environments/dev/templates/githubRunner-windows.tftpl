@@ -21,9 +21,8 @@ Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/v2.30
 Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD/actions-runner-win-x64-${GITHUB_RUNNER_VERSION}.zip", "$PWD");
 # Get Registration Token
 $PAT = "${GITHUB_PAT}";
-$owner = "${GITHUB_REPO_OWNER}";
-$repo = "${GITHUB_REPO_NAME}";
-$url = "https://api.github.com/repos/$owner/$repo/actions/runners/registration-token";
+$org = "${GITHUB_ORGANIZATION}";
+$url = "https://api.github.com/orgs/$org/actions/runners/registration-token";
 $headers = @{
     'Accept' = 'application/vnd.github+json'
     'X-GitHub-Api-Version' = '${GITHUB_API_VERSION}'
@@ -31,6 +30,6 @@ $headers = @{
 };
 $reg_token = Invoke-RestMethod -Uri $url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
 # Create the runner and start the configuration experience
-./config.cmd --unattended --url https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME} --token $reg_token;
+./config.cmd --unattended --url https://github.com/${GITHUB_ORGANIZATION} --token $reg_token;
 ./run.cmd;
 </powershell>

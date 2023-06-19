@@ -90,3 +90,9 @@ variable "ec2_runner_github_repo_name" {
 #   type        = string
 #   description = "GtiHub Runner Registration Token"
 # }
+
+variable "ec2_runner_github_organization_name" {
+  type        = string
+  description = "GtiHub Organization Name for Runner Registration"
+  default     = "Zikulas"
+}
