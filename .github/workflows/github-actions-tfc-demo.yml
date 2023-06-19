@@ -1,0 +1,35 @@
+name: GitHub Actions with Terraform Cloud Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: [self-hosted, windows]
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+      
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+     
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Job Status
+        run: echo "This job's status is ${{ job.status }}."
