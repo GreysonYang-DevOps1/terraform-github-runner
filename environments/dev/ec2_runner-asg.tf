@@ -37,7 +37,7 @@ module "asg_runner" {
     GITHUB_REPO_OWNER     = "${var.ec2_runner_github_repo_owner}"
     GITHUB_REPO_NAME      = "${var.ec2_runner_github_repo_name}"
     GITHUB_API_VERSION    = "${var.ec2_runner_github_api_version}"
-    GITHUB_REPO_REG_TOKEN = "${var.ec2_runner_github_repo_registration_token}"
+    # GITHUB_REPO_REG_TOKEN = "${var.ec2_runner_github_repo_registration_token}"
   }))
 
   enable_monitoring = true
