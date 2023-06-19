@@ -1,8 +1,10 @@
 name: GitHub Actions with Terraform Cloud Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions
 on: [push]
+env:
+  tf_actions_working_dir: environments/dev
 jobs:
-  Explore-GitHub-Actions:
+  Test-GitHub-Actions-with-Terraform-Cloud:
     runs-on: [ubuntu-latest]
     defaults:
       run:
