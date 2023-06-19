@@ -1,10 +1,12 @@
 terraform {
   
   cloud {
-    organization = "TFAL"
+    # organization = "TFAL"
+    organization = "Galex"
 
     workspaces {
-      name = "DEV-Greyson-CLI"
+      # name = "DEV-Greyson-CLI"
+      name = "TFA-Github_Runner"
     }
   }
 

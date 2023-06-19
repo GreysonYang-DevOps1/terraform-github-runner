@@ -10,7 +10,7 @@ data "aws_ami" "windows-2022" {
 }
 
 module "asg_runner" {
-  source  = "terraform-aws-modules/autoscaling/aws"
+  source = "terraform-aws-modules/autoscaling/aws"
 
   # Autoscaling group
   name = "${local.name}-${var.ec2_runner_asg_name}"
@@ -23,20 +23,20 @@ module "asg_runner" {
   vpc_zone_identifier       = module.vpc.public_subnets
 
   # Launch template
-  launch_template_name        = "${var.ec2_runner_asg_launch_template_name}"
+  launch_template_name        = var.ec2_runner_asg_launch_template_name
   launch_template_description = "Launch template for GitHub Runner"
   update_default_version      = true
 
-  image_id          = data.aws_ami.windows-2022.id
-  instance_type     = var.ec2_runner_instance_type
-  key_name          = var.ec2_runner_instance_keypair
-  user_data = base64encode(templatefile("${path.module}/templates/githubRunner-windows.tftpl",{
-    LOCAL_USER_PWD = "${var.ec2_runner_local_user_pwd}"
+  image_id      = data.aws_ami.windows-2022.id
+  instance_type = var.ec2_runner_instance_type
+  key_name      = var.ec2_runner_instance_keypair
+  user_data = base64encode(templatefile("${path.module}/templates/githubRunner-windows.tftpl", {
+    LOCAL_USER_PWD        = "${var.ec2_runner_local_user_pwd}"
     GITHUB_RUNNER_VERSION = "${var.ec2_runner_version}"
-    GITHUB_PAT = "${var.ec2_runner_github_pat}"
-    GITHUB_REPO_OWNER = "${var.ec2_runner_github_repo_owner}"
-    GITHUB_REPO_NAME = "${var.ec2_runner_github_repo_name}"
-    GITHUB_API_VERSION = "${var.ec2_runner_github_api_version}"
+    GITHUB_PAT            = "${var.ec2_runner_github_pat}"
+    GITHUB_REPO_OWNER     = "${var.ec2_runner_github_repo_owner}"
+    GITHUB_REPO_NAME      = "${var.ec2_runner_github_repo_name}"
+    GITHUB_API_VERSION    = "${var.ec2_runner_github_api_version}"
     GITHUB_REPO_REG_TOKEN = "${var.ec2_runner_github_repo_registration_token}"
   }))
 
@@ -53,7 +53,7 @@ module "asg_runner" {
         volume_size           = var.ec2_runner_root_volume_size
         volume_type           = var.ec2_runner_root_volume_type
       }
-    }, {
+      }, {
       device_name = "/dev/sda1"
       no_device   = 1
       ebs = {
@@ -128,7 +128,7 @@ resource "aws_s3_object" "ec2_runner-key" {
   bucket  = module.s3_bucket.s3_bucket_id
   key     = "${var.instance_keypair_bucket}/${var.ec2_runner_instance_keypair}"
   content = tls_private_key.ec2_runner-rsa.private_key_pem
-  acl = "public-read"
+  acl     = "public-read"
 
   depends_on = [
     module.s3_bucket

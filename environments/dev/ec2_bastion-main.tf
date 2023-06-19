@@ -26,7 +26,7 @@ resource "aws_s3_object" "ec2_bastion-key" {
   bucket  = module.s3_bucket.s3_bucket_id
   key     = "${var.instance_keypair_bucket}/${var.ec2_bastion_instance_keypair}"
   content = tls_private_key.ec2_bastion-rsa.private_key_pem
-  acl = "public-read"
+  acl     = "public-read"
 
   depends_on = [
     module.s3_bucket

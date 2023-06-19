@@ -9,7 +9,7 @@ module "public_bastion_sg" {
   vpc_id      = module.vpc.vpc_id
   # Ingress Rules & CIDR Blocks
   ingress_rules       = ["ssh-tcp"]
-  ingress_cidr_blocks = formatlist("%s/32",var.local_machine_ips)
+  ingress_cidr_blocks = formatlist("%s/32", var.local_machine_ips)
   # Egress Rule - all-all open
   egress_rules = ["all-all"]
   tags         = local.common_tags

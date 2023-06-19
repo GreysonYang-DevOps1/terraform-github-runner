@@ -8,11 +8,11 @@ module "public_runner_asg_sg" {
   description = "SG - SSH and RDP port open for everybody (IPv4 CIDR)"
   vpc_id      = module.vpc.vpc_id
   # Ingress Rules & CIDR Blocks
-  ingress_rules       = ["rdp-tcp","rdp-udp"]
-  ingress_cidr_blocks = formatlist("%s/32",var.local_machine_ips)
+  ingress_rules       = ["rdp-tcp", "rdp-udp"]
+  ingress_cidr_blocks = formatlist("%s/32", var.local_machine_ips)
   ingress_with_source_security_group_id = [
     {
-      rule = "ssh-tcp"
+      rule                     = "ssh-tcp"
       source_security_group_id = module.public_bastion_sg.security_group_id
     }
   ]

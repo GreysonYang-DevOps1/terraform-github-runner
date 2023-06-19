@@ -62,13 +62,13 @@ variable "ec2_runner_local_user_pwd" {
 variable "ec2_runner_version" {
   type        = string
   description = "GitHub Runner Version."
-  default = "2.304.0"
+  default     = "2.304.0"
 }
 
 variable "ec2_runner_github_api_version" {
   type        = string
   description = "GitHub API Version."
-  default = "2022-11-28"
+  default     = "2022-11-28"
 }
 
 variable "ec2_runner_github_pat" {
