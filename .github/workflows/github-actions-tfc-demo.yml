@@ -39,5 +39,10 @@ jobs:
         run: terraform plan -no-color -var ec2_runner_github_pat=${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve -no-color -var ec2_runner_github_pat=${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
       - name: Job Status
         run: echo "This job's status is ${{ job.status }}."
