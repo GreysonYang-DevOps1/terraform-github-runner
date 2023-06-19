@@ -36,12 +36,12 @@ jobs:
       
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var ec2_runner_github_pat=${{ secrets.GITHUB_TOKEN }}
+        run: terraform plan -no-color -var="ec2_runner_github_pat=${{ secrets.GITHUB_TOKEN }}" -var='local_machine_ips=["120.18.220.63","120.18.18.159"]'
         continue-on-error: true
 
       - name: Terraform Apply
         id: apply
-        run: terraform apply -auto-approve -no-color -var ec2_runner_github_pat=${{ secrets.GITHUB_TOKEN }}
+        run: terraform apply -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.GITHUB_TOKEN }}" -var='local_machine_ips=["120.18.220.63","120.18.18.159"]'
         continue-on-error: true
 
       - name: Job Status
