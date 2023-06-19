@@ -1,0 +1,37 @@
+<powershell>
+# Install IIS
+Install-WindowsFeature -name Web-Server -IncludeManagementTools;
+# Install the OpenSSH Client
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0;
+# Install the OpenSSH Server
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0;
+# Start the sshd service
+Start-Service sshd;
+# OPTIONAL but recommended:
+Set-Service -Name sshd -StartupType 'Automatic';
+# Reset password for Administrator
+$accountpwd = "${LOCAL_USER_PWD}";
+$NewPassword = ConvertTo-SecureString $accountpwd -AsPlainText -Force;
+Set-LocalUser -Name "Administrator" -Password $NewPassword;
+# Create a folder under the drive root
+mkdir actions-runner; cd actions-runner;
+# Download the latest runner package
+Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-win-x64-${GITHUB_RUNNER_VERSION}.zip -OutFile actions-runner-win-x64-${GITHUB_RUNNER_VERSION}.zip;
+# Extract the installer
+Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD/actions-runner-win-x64-${GITHUB_RUNNER_VERSION}.zip", "$PWD");
+# Get Registration Token
+##$PAT = "${GITHUB_PAT}";
+##$owner = "${GITHUB_REPO_OWNER}";
+##$repo = "${GITHUB_REPO_NAME}";
+##$url = "https://api.github.com/repos/$owner/$repo/actions/runners/registration-token";
+##$headers = @{
+##    'Accept' = 'application/vnd.github+json'
+##    'X-GitHub-Api-Version' = '${GITHUB_API_VERSION}'
+##    'Authorization' = "Bearer $PAT"
+##};
+##$reg_token = Invoke-RestMethod -Uri $url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
+# Create the runner and start the configuration experience
+##./config.cmd --unattended --url https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME} --token $reg_token;
+./config.cmd --unattended --url https://github.com/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME} --token ${GITHUB_REPO_REG_TOKEN};
+./run.cmd;
+</powershell>
