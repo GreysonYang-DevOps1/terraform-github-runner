@@ -77,3 +77,10 @@ variable "vpc_enable_dns_support" {
   type        = bool
   default     = true
 }
+
+# VPC ublic IP Auto Assign (True or False)
+variable "vpc_map_public_ip_on_launch" {
+  description = "Enable Public IP Auto Assign"
+  type        = bool
+  default     = true
+}

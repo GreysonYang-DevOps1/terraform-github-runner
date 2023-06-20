@@ -20,7 +20,7 @@ module "vpc" {
   private_subnets = var.vpc_private_subnets
 
   # Subnets
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = var.vpc_map_public_ip_on_launch
 
   # NAT Gateways - Outbound Communication
   enable_nat_gateway = var.vpc_enable_nat_gateway

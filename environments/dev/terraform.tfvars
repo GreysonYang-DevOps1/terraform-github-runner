@@ -42,3 +42,4 @@ vpc_enable_nat_gateway   = true
 vpc_single_nat_gateway   = true
 vpc_enable_dns_hostnames = true
 vpc_enable_dns_support   = true
+vpc_map_public_ip_on_launch = false
