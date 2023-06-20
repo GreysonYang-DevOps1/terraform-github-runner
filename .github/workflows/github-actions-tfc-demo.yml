@@ -36,18 +36,18 @@ jobs:
       
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}" -var='local_machine_ips=["120.18.220.63","120.18.18.159"]'
+        run: terraform plan -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
         continue-on-error: false
 
-      # - name: Terraform Apply
-      #   id: apply
-      #   run: terraform apply -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}" -var='local_machine_ips=["120.18.220.63","120.18.18.159"]'
-      #   continue-on-error: true
-      
-      - name: Terraform Destroy
-        id: destroy
-        run: terraform apply -destroy -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}" -var='local_machine_ips=["120.18.220.63","120.18.18.159"]'
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
         continue-on-error: true
+      
+      # - name: Terraform Destroy
+      #   id: destroy
+      #   run: terraform apply -destroy -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
+      #   continue-on-error: true
 
       - name: Job Status
         run: echo "This job's status is ${{ job.status }}."
