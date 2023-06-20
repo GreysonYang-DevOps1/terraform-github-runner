@@ -12,6 +12,7 @@ jobs:
         working-directory: ${{ env.tf_actions_working_dir }}
     permissions:
       pull-requests: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
@@ -52,6 +53,7 @@ jobs:
         working-directory: ${{ env.tf_actions_working_dir }}
     permissions:
       pull-requests: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
@@ -76,11 +78,44 @@ jobs:
         id: apply
         run: terraform apply -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
         continue-on-error: true
+
+      - name: Job Status
+        run: echo "This job's status is ${{ job.status }}."
+  
+  Terraform-Destroy:
+    runs-on: [ubuntu-latest]
+    environment: 'NonProd-TF-Apply'
+    needs: Terraform-Apply
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+     
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
       
-      # - name: Terraform Destroy
-      #   id: destroy
-      #   run: terraform apply -destroy -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
-      #   continue-on-error: true
+      - name: Terraform Destroy
+        id: destroy
+        run: terraform apply -destroy -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
+        continue-on-error: true
 
       - name: Job Status
         run: echo "This job's status is ${{ job.status }}."
