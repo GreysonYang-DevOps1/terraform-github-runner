@@ -6,7 +6,6 @@ env:
 jobs:
   Terraform-Plan:
     runs-on: [ubuntu-latest]
-    environment: 'NonProd-TF-Plan'
     defaults:
       run:
         working-directory: ${{ env.tf_actions_working_dir }}
@@ -84,7 +83,7 @@ jobs:
   
   Terraform-Destroy:
     runs-on: [ubuntu-latest]
-    environment: 'NonProd-TF-Apply'
+    environment: 'NonProd-TF-Destroy'
     needs: Terraform-Apply
     defaults:
       run:
