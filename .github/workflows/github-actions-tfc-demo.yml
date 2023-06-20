@@ -4,8 +4,9 @@ on: [push]
 env:
   tf_actions_working_dir: environments/dev
 jobs:
-  Test-GitHub-Actions-with-Terraform-Cloud:
+  Terraform-Plan:
     runs-on: [ubuntu-latest]
+    environment: 'NonProd-TF-Plan'
     defaults:
       run:
         working-directory: ${{ env.tf_actions_working_dir }}
@@ -39,6 +40,38 @@ jobs:
         run: terraform plan -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
         continue-on-error: false
 
+      - name: Job Status
+        run: echo "This job's status is ${{ job.status }}."
+  
+  Terraform-Apply:
+    runs-on: [ubuntu-latest]
+    environment: 'NonProd-TF-Apply'
+    needs: Terraform-Plan
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+     
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve -no-color -var="ec2_runner_github_pat=${{ secrets.PAT_RUNNER_REGISTRATION_ORG }}"
@@ -51,3 +84,5 @@ jobs:
 
       - name: Job Status
         run: echo "This job's status is ${{ job.status }}."
+
+          
