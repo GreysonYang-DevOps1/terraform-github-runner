@@ -6,7 +6,8 @@ module "public_bastion_sg" {
 
   name        = "${local.name}-public-bastion-sg"
   description = "SG - SSH port open for everybody (IPv4 CIDR)"
-  vpc_id      = module.vpc.vpc_id
+  # vpc_id      = module.vpc.vpc_id
+  vpc_id      = "vpc-0862a838fa77974f5"
   # Ingress Rules & CIDR Blocks
   ingress_rules       = ["ssh-tcp"]
   ingress_cidr_blocks = formatlist("%s/32", var.local_machine_ips)

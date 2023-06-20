@@ -7,7 +7,9 @@ module "ec2_bastion" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   key_name               = var.ec2_bastion_instance_keypair
-  subnet_id              = module.vpc.public_subnets[0]
+  # subnet_id              = module.vpc.public_subnets[0]
+  subnet_id              = "subnet-056ae4fa6b5d83e57"
+  associate_public_ip_address = true
   vpc_security_group_ids = [module.public_bastion_sg.security_group_id]
   tags                   = local.common_tags
 }
