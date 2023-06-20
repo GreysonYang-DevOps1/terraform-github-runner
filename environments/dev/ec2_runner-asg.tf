@@ -20,8 +20,8 @@ module "asg_runner" {
   desired_capacity          = 3
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
-  # vpc_zone_identifier       = module.vpc.public_subnets
-  vpc_zone_identifier =  ["subnet-056ae4fa6b5d83e57","subnet-0f8f0d1e16aae1f92"]
+  vpc_zone_identifier       = module.vpc.public_subnets
+  # vpc_zone_identifier =  ["subnet-056ae4fa6b5d83e57","subnet-0f8f0d1e16aae1f92"]
 
   # Launch template
   launch_template_name        = var.ec2_runner_asg_launch_template_name
