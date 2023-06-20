@@ -34,12 +34,12 @@ ec2_runner_asg_scaling_policy_avg_cpu_warmup            = 600
 ec2_runner_asg_scaling_policy_avg_cpu_target_percentage = 50.0
 
 # VPC Variables
-vpc_name                 = "github_runner-vpc"
-vpc_cidr_block           = "10.0.0.0/16"
-vpc_public_subnets       = ["10.0.101.0/24", "10.0.102.0/24"]
-vpc_private_subnets      = ["10.0.1.0/24", "10.0.2.0/24"]
-vpc_enable_nat_gateway   = true
-vpc_single_nat_gateway   = true
-vpc_enable_dns_hostnames = true
-vpc_enable_dns_support   = true
-vpc_map_public_ip_on_launch = false
+# vpc_name                 = "github_runner-vpc"
+# vpc_cidr_block           = "10.0.0.0/16"
+# vpc_public_subnets       = ["10.0.101.0/24", "10.0.102.0/24"]
+# vpc_private_subnets      = ["10.0.1.0/24", "10.0.2.0/24"]
+# vpc_enable_nat_gateway   = true
+# vpc_single_nat_gateway   = true
+# vpc_enable_dns_hostnames = true
+# vpc_enable_dns_support   = true
+# vpc_map_public_ip_on_launch = false

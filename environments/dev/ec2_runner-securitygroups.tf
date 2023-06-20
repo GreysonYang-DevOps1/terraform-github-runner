@@ -6,8 +6,8 @@ module "public_runner_asg_sg" {
 
   name        = "${local.name}-public-runner-sg"
   description = "SG - SSH and RDP port open for everybody (IPv4 CIDR)"
-  vpc_id      = module.vpc.vpc_id
-  # vpc_id      = "vpc-0862a838fa77974f5"
+  # vpc_id      = module.vpc.vpc_id
+  vpc_id      = "vpc-0862a838fa77974f5"
 
   # Ingress Rules & CIDR Blocks
   ingress_rules       = ["rdp-tcp", "rdp-udp"]
