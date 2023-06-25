@@ -85,7 +85,7 @@ module "asg_runner" {
     {
       name                  = "RunnerTerminationLifeCycleHook"
       default_result        = "CONTINUE"
-      heartbeat_timeout     = 180
+      heartbeat_timeout     = 300
       lifecycle_transition  = "autoscaling:EC2_INSTANCE_TERMINATING"
       notification_metadata = jsonencode({ "goodbye" = "world" })
     }
