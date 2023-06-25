@@ -16,8 +16,8 @@ module "asg_runner" {
   name = "${local.name}-${var.ec2_runner_asg_name}"
 
   min_size                  = 0
-  max_size                  = 5
-  desired_capacity          = 3
+  max_size                  = 2
+  desired_capacity          = 1s
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
   # vpc_zone_identifier       = module.vpc.public_subnets
