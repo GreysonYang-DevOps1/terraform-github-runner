@@ -81,6 +81,16 @@ module "asg_runner" {
     availability_zone = "${var.aws_region}a"
   }
 
+  initial_lifecycle_hooks = [
+    {
+      name                  = "RunnerTerminationLifeCycleHook"
+      default_result        = "CONTINUE"
+      heartbeat_timeout     = 180
+      lifecycle_transition  = "autoscaling:EC2_INSTANCE_TERMINATING"
+      notification_metadata = jsonencode({ "goodbye" = "world" })
+    }
+  ]
+
   tags = local.common_tags
 
   # Autoscaling Schedule
