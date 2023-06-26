@@ -13,6 +13,15 @@ Set-Service -Name sshd -StartupType 'Automatic';
 $accountpwd = "${LOCAL_USER_PWD}";
 $NewPassword = ConvertTo-SecureString $accountpwd -AsPlainText -Force;
 Set-LocalUser -Name "Administrator" -Password $NewPassword;
+# Install Powershell 7
+$release = "7.3.4";
+$packageName = "PowerShell-${release}-win-x64.msi";
+$downloadURL = "https://github.com/PowerShell/PowerShell/releases/download/v${release}/${packageName}";
+$packagePath = Join-Path -Path $tempDir -ChildPath $packageName;
+Invoke-WebRequest -Uri $downloadURL -OutFile $packagePath;
+$ArgumentList=@("/i", $packagePath, "/quiet");
+$process = Start-Process msiexec -ArgumentList $ArgumentList -Wait -PassThru;
+if ($process.exitcode -ne 0) {throw "Quiet install failed, please rerun install without -Quiet switch or ensure you have administrator rights"};
 # Create a folder under the drive root
 mkdir actions-runner; cd actions-runner;
 # Download the latest runner package
