@@ -15,6 +15,6 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - run: echo "This job's status is ${{ job.status }}."
-      - run: sleep 60
+      - uses: browser-actions/setup-chrome@latest
+      - run: sleep 30
       - run: echo "This job's status is ${{ job.status }}."
