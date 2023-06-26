@@ -29,7 +29,7 @@ ec2_runner_asg_scaling_schedule_night_desired           = 1
 ec2_runner_asg_scaling_schedule_morning_recurrence      = "0 7 * * 1-5"
 ec2_runner_asg_scaling_schedule_morning_min             = 1
 ec2_runner_asg_scaling_schedule_morning_max             = 2
-ec2_runner_asg_scaling_schedule_morning_desired         = 1
+ec2_runner_asg_scaling_schedule_morning_desired         = 0
 ec2_runner_asg_scaling_policy_avg_cpu_warmup            = 600
 ec2_runner_asg_scaling_policy_avg_cpu_target_percentage = 50.0
 

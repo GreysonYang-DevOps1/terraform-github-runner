@@ -1,4 +1,4 @@
- cd C:\Windows\System32\actions-runner;
+cd C:\Windows\System32\actions-runner;
 
 $aws_token_url = "http://169.254.169.254/latest/api/token";
 
