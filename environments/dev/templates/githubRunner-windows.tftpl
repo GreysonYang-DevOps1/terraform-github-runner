@@ -18,7 +18,7 @@ $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRan
 $null = New-Item -ItemType Directory -Path $tempDir -Force -ErrorAction SilentlyContinue;
 $release = "7.3.4";
 $packageName = "PowerShell-$release-win-x64.msi";
-$downloadURL = "https://github.com/PowerShell/PowerShell/releases/download/v$release/$packageNam}";
+$downloadURL = "https://github.com/PowerShell/PowerShell/releases/download/v$release/$packageName";
 $packagePath = Join-Path -Path $tempDir -ChildPath $packageName;
 Invoke-WebRequest -Uri $downloadURL -OutFile $packagePath;
 $ArgumentList=@("/i", $packagePath, "/quiet");
