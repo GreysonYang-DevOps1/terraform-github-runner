@@ -23,6 +23,15 @@ module "asg_runner" {
   # vpc_zone_identifier       = module.vpc.public_subnets
   vpc_zone_identifier =  ["subnet-056ae4fa6b5d83e57","subnet-0f8f0d1e16aae1f92"]
 
+  # Instance Refresh
+  instance_refresh = {
+    strategy = "Rolling"
+    prefrences = {
+      instance_warmup = 300
+      min_healthy_percentage = 50
+    }
+  }
+
   # Launch template
   launch_template_name        = var.ec2_runner_asg_launch_template_name
   launch_template_description = "Launch template for GitHub Runner"
