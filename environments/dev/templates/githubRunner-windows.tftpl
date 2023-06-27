@@ -77,6 +77,6 @@ Register-ScheduledJob -Name Remove-Runner-Task -Trigger $trigger -ScriptBlock {
     };
 };
 # Create the runner and start the configuration experience
-./config.cmd --unattended --url https://github.com/${GITHUB_ORGANIZATION} --token $reg_token;
+./config.cmd --unattended --url https://github.com/${GITHUB_ORGANIZATION} --token $reg_token --no-default-labels --labels 'self-hosted-aws';
 ./run.cmd;
 </powershell>
