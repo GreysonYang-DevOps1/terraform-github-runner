@@ -45,6 +45,7 @@ $headers = @{
 };
 $reg_token = Invoke-RestMethod -Uri $reg_url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
 # Create Scheduled Job for Runner Removal
+$trigger = New-JobTrigger -Once -At (Get-Date).Date -RepetitionInterval (New-TimeSpan -Seconds 60) -RepeatIndefinitely
 Register-ScheduledJob -Name Remove-Runner-Task -Trigger $trigger -ScriptBlock {
     $aws_token_url = "http://169.254.169.254/latest/api/token";
     $aws_token_headers = @{
@@ -57,7 +58,7 @@ Register-ScheduledJob -Name Remove-Runner-Task -Trigger $trigger -ScriptBlock {
     };
     $ec2_lifecycle_state = Invoke-RestMethod -Uri $ec2_metadata_url -Method Get -Headers $ec2_metadata_headers;
     $date=Get-Date;
-    $content=$ec2_lifecycle_state + "," + $date;
+    $content="ScheduledJob Log: EC2 Lifecycle State: " + $ec2_lifecycle_state + "," + $date;
     Add-Content C:\ProgramData\Amazon\EC2Launch\log\agent.log $content;
     if($ec2_lifecycle_state -eq 'Terminated'){
         $PAT = "${GITHUB_PAT}";
@@ -71,7 +72,7 @@ Register-ScheduledJob -Name Remove-Runner-Task -Trigger $trigger -ScriptBlock {
         $remove_token = Invoke-RestMethod -Uri $remove_token_url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
         C:\Windows\System32\actions-runner\config.cmd remove --token $remove_token;
     }else {
-        $content="Good";
+        $content="ScheduledJob Log: EC2 Lifecycle State: Not Terminated";
         Add-Content C:\ProgramData\Amazon\EC2Launch\log\agent.log $content;
     };
 };
