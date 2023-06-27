@@ -16,7 +16,7 @@ module "asg_runner" {
   name = "${local.name}-${var.ec2_runner_asg_name}"
 
   min_size                  = 0
-  max_size                  = 2
+  max_size                  = 3
   desired_capacity          = 2
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
@@ -94,7 +94,7 @@ module "asg_runner" {
     {
       name                  = "RunnerTerminationLifeCycleHook"
       default_result        = "CONTINUE"
-      heartbeat_timeout     = 300
+      heartbeat_timeout     = 150
       lifecycle_transition  = "autoscaling:EC2_INSTANCE_TERMINATING"
       notification_metadata = jsonencode({ "goodbye" = "world" })
     }

@@ -37,13 +37,44 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression
 # Get Registration Token
 $PAT = "${GITHUB_PAT}";
 $org = "${GITHUB_ORGANIZATION}";
-$url = "https://api.github.com/orgs/$org/actions/runners/registration-token";
+$reg_url = "https://api.github.com/orgs/$org/actions/runners/registration-token";
 $headers = @{
     'Accept' = 'application/vnd.github+json'
     'X-GitHub-Api-Version' = '${GITHUB_API_VERSION}'
     'Authorization' = "Bearer $PAT"
 };
-$reg_token = Invoke-RestMethod -Uri $url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
+$reg_token = Invoke-RestMethod -Uri $reg_url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
+# Create Scheduled Job for Runner Removal
+Register-ScheduledJob -Name Remove-Runner-Task -Trigger $trigger -ScriptBlock {
+    $aws_token_url = "http://169.254.169.254/latest/api/token";
+    $aws_token_headers = @{
+        'X-aws-ec2-metadata-token-ttl-seconds' = '21600'
+    };
+    $aws_token = Invoke-RestMethod -Uri $aws_token_url -Method Put -Headers $aws_token_headers;
+    $ec2_metadata_url = "http://169.254.169.254/latest/meta-data/autoscaling/target-lifecycle-state";
+    $ec2_metadata_headers = @{
+        'X-aws-ec2-metadata-token' = $aws_token
+    };
+    $ec2_lifecycle_state = Invoke-RestMethod -Uri $ec2_metadata_url -Method Get -Headers $ec2_metadata_headers;
+    $date=Get-Date;
+    $content=$ec2_lifecycle_state + "," + $date;
+    Add-Content C:\ProgramData\Amazon\EC2Launch\log\agent.log $content;
+    if($ec2_lifecycle_state -eq 'Terminated'){
+        $PAT = "${GITHUB_PAT}";
+        $org = "${GITHUB_ORGANIZATION}";
+        $headers = @{
+            'Accept' = 'application/vnd.github+json'
+            'X-GitHub-Api-Version' = '2022-11-28'
+            'Authorization' = "Bearer $PAT"
+        };
+        $remove_token_url = "https://api.github.com/orgs/$org/actions/runners/remove-token";
+        $remove_token = Invoke-RestMethod -Uri $remove_token_url -Method Post -Headers $headers | Select-Object -Property token -First 1 -ExpandProperty token;
+        C:\Windows\System32\actions-runner\config.cmd remove --token $remove_token;
+    }else {
+        $content="Good";
+        Add-Content C:\ProgramData\Amazon\EC2Launch\log\agent.log $content;
+    };
+};
 # Create the runner and start the configuration experience
 ./config.cmd --unattended --url https://github.com/${GITHUB_ORGANIZATION} --token $reg_token;
 ./run.cmd;
